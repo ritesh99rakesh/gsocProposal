@@ -345,7 +345,7 @@ I first plan to implement `MatrixNormalDistribution`. For this I will reference 
 
 Expected working;
 ```python
->>> matrixNormal = MatrixNormalDistribution['N', mu=[[1, 4], [6, 8], [10, 2]}, sigma_row=diag(2, 1, 3), sigma_col=[[2, 1], [1, 3]]
+>>> matrixNormal = MatrixNormalDistribution('N', mu=[[1, 4], [6, 8], [10, 2]}, sigma_row=diag(2, 1, 3), sigma_col=[[2, 1], [1, 3])
 >>> mean(matrixNormal)
 [[1, 2], [6, 8], [10, 2]]
 ```
