@@ -341,7 +341,7 @@ With all the distributions implemented and with the multivariate distribution at
 
 I will write two files namely `random_matrix.py` and `random_matrix_types.py`. `random_matrix.py` will be along the lines of `crv.py` and I will define the `MatrixPSpace` for random matrices. In `random_matrix_types.py`, I plan to implement various types of random matrices distribution and follow a similar layout to `crv_types.py`. Few of them are `MatrixNormalDistribution` and `MatrixTDistribution`.
 
-I first plan to implement `MatrixNormalDistribution`. For this I will reference from [wolfram](https://reference.wolfram.com/language/ref/MatrixNormalDistribution.html). It is a distribution of $\mu + \Sigma_{row}^{1/2}.x.\Sigma_{col}^{1/2}$ where $x$ is a matrix with independent identically distributed matrix elements that follow `Normal(0,1)`. The probability density for a matrix $x$ in a matrix normal distribution is proportional to $\exp\left(-\frac{1}{2}Tr\left[\Sigma_{col}^{-1}.(x - \mu)^\top.\Sigma_{row}^{-1}.(x - \mu)\right]\right)$. I will also add/update functions to calculate mean, variance and kurtosis of this distribution.
+I first plan to implement `MatrixNormalDistribution`. For this I will reference from [wolfram](https://reference.wolfram.com/language/ref/MatrixNormalDistribution.html). I will also add/update functions to calculate mean, variance and kurtosis of this distribution.
 
 Expected working;
 ```python
