@@ -148,7 +148,7 @@ class CompoundPSpace(PSpace):
   2. Find out how the distribution is compounded, ie which parameter is compounded and which distribution it is. Say `X ~ Normal('X', mu, sigma**2)`
   3. Return the resultant distribution with the modified parameters. In our case, it is `Normal`, `X ~ Normal('X', mu0, sigma0**2 + sigma**2)`
 
-Example:
+Code for above example would like:
 ```python
 def compute_compound_type(distribution, **kwargs):
     ...
@@ -160,6 +160,18 @@ def compute_compound_type(distribution, **kwargs):
             return NormalDistribution(dens.args[0], var + dens.args[1])
 ```
 An unevaluated object would be returned if the type of distribution can't be evaluated.
+
+Compound distributions are very common in Machine Learning especially Probabilistic ML. A well known example from Probabilistic ML is that of Negative Binomial distribution(NBD). The NBD arises as a continuous mixture of Poisson distributions (i.e. a compound probability distribution) where the mixing distribution of the Poisson rate is a gamma distribution.
+```python
+>>> k = Symbol("k", positive=True)
+>>> theta = Symbol("theta", positive=True)
+>>> lamda = Gamma("lamda", k, theta)
+>>> X = Poisson("x", lamda)
+>>> # therefore above function would return
+>>> compute_compuound_type(X)
+NegativeBinomial("x", k, theta/(theta+1))
+
+```
 
 ---
 
@@ -245,6 +257,16 @@ Then I will take up following two important stochastic processes:
         
         # Also implement Variance on number of visits, Expected number of steps, Variance on number of steps, Transient probabilities and Absorbing probabilities as given here: https://en.wikipedia.org/wiki/Absorbing_Markov_chain
     ```
+    Example usage:
+    ```python
+    >>> MChain = MarkovProcess("x", [[0.98, 0.02], [0.78, 0.22]], [0.90, 0.10])
+    >>> MChain.transition_matrix()
+    [[0.98, 0.02], [0.78, 0.22]]
+    >>> MChain.state(1)
+    [0.96, 0.04]
+    >>> MChain.stationary_state()
+    [0.975, 0.025]
+    ``` 
 
 2. Random walks: 
    The aim would be to implement random walks in one, two and three dimensions since these are the ones that are most often used. I plan to implement them in the cartesian space pertaining to the dimension of the walk.
@@ -327,6 +349,20 @@ Then I will take up following two important stochastic processes:
         def kurtosis(self, steps):
             """ Returns kurtosis """
             return moment(4, steps)
+   ```
+   Example usage:
+   ```python
+   >>> RWalk = RandomWalk_1D()
+   >>> RWalk.move()
+   RWalk.position()
+   1
+   >>> RWalk.walk(steps=5)
+   >>> RWalk.path()
+   [0, 1, 2, 1, 0, 1, 0]
+   >>> RWalk.expected_right(steps=10)
+   5
+   >>> RWalk.prob_position(pos=3, steps=2)
+   0
    ```
     I also plan to implement [Gaussian Random walk](http://physics.gu.se/~frtbm/joomla/media/mydocs/LennartSjogren/kap2.pdf), though this will not be top priority as any new walk, could now be added along the same lines as above and I aim to complete `SimpleRandomWalk` for one, two and three dimensions in its entirity and then move ahead with other random walks.
 
@@ -512,6 +548,11 @@ I am proficient in writing code using Python. Due to my exposure to sympy and co
 *  [#16449](https://github.com/sympy/sympy/pull/16449) stats: Added CDF for Maxwell, Rayleigh, Cauchy and Gompertz distributions.
 *  [#16465](https://github.com/sympy/sympy/pull/16465) stats: Added Levy distribution to crv_types.py and added tests for it.
 
+***
+## *Availablity and Working Hours*
+I have no other commitments during the summer. My holidays duration match with that of GSoC. During this time I will be able to devote 40+ (minimum) hours per week. My college reopens in August. But due to little load during the beginning I still would be able to devote 40+ hours.
+
+I do not have particular working hours and can adjust my routine according to mentor, so as to achieve maximum efficiency. I will always be available for replying to messages.
 ***
 
 ### References
