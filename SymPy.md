@@ -40,8 +40,8 @@
 
 * Academic Experience
   
-    I am a third-year undergraduate student at Indian Institute of Technology Kanpur. I am pursuing BTech in Electrical Engineering with second major in Computer Science and Engineering.
-    Currently, I am doing well with my coursework. My current CPI is 9.8/10 after 5 semesters. Few of my courses relevant for the project:
+    I am a third-year undergraduate student at the Indian Institute of Technology Kanpur. I am pursuing BTech in Electrical Engineering with the second major in Computer Science and Engineering.
+    Currently, I am doing well with my coursework. My current CPI is 9.8/10 after five semesters. Few of my courses relevant for the project:
     * Probability and Statistics
     * Randomized Algorithms
     * Algorithms - I and II
@@ -50,9 +50,9 @@
   
 * Programming Experience
     
-    I find programming and mathematics to be very interesting as they are the best means to exercise the brain. I am proficient in C, C++, Python, Julia, Javascript. My field of interest include Randomized Algorithms, Probailistic Machine Learning and Robotics.
+    I find programming and mathematics to be very interesting as they are the best means to exercise the brain. I am proficient in C, C++, Python, Julia, Javascript. My field of interest includes Randomized Algorithms, Probabilistic Machine Learning and Robotics.
 
-    I am accustomed to C++ and Object Oriented Programming. I was introduced to Python three years ago and since then I have used it in multiple projects both course related and otherwise. I am reasonably comfortable with Git and Github. I have also become quite comfortable with SymPy as I have been using and contributing to it for past months. 
+    I am accustomed to C++ and Object Oriented Programming. I introduced to Python three years ago, and since then I have used it in multiple projects both course-related and otherwise. I am reasonably comfortable with Git and Github. I have also become quite comfortable with SymPy as I have been using and contributing to it for past months. 
 
 ***
 ## _The Project_
@@ -64,7 +64,7 @@ My target of GSoC'19 under SymPy would be to develop the stats module to increas
 ---
 ## _Motivation_
 
-My motivation towards the project is my interest in probability and statistics, and algorithms. Also, due to my exposure to (probabilitic) machine learning, I feel that SymPy in general and Stats module in particular could be very handy in this and other fields. Moreover, the people involved with SymPy has been so welcoming and have inspired to take up this project.
+My motivation towards the project is my interest in probability and statistics, and algorithms. Also, due to my exposure to (probabilistic) machine learning, I feel that SymPy in general and Stats module, in particular, could be handy in this and other fields. Moreover, the people involved with SymPy has been so welcoming and have inspired to take up this project.
 
 ---
 
@@ -117,9 +117,9 @@ if any(isinstance(arg, RandomSymbol) for arg in args):
 ```
 (stats/crv_types.py and stats/drv_types.py)
 
-which assumes that the RV belongs to `JointPSpace`. This concept mixes both joint and compound distributions and complicates the further computation of compound RV. 
+Which assumes that the RV belongs to `JointPSpace`. This concept mixes both joint and compound distributions and complicates the further computation of compound RV. 
 
-To solve this issue, I plan to implement compound RVs in a separate file(`compound_rv.py`), very similar to joint distribution. This also requires to implement a separate class of probability space called `CompoundPSpace`. An object of this class would be created if the parameters of the given RV are found to be distributed according to another RV.
+To solve this issue, I plan to implement compound RVs in a separate file(`compound_rv.py`), Very similar to joint distribution. This also requires to implement a separate class of probability space called `CompoundPSpace`. An object of this class will be created if the parameters of the given RV are found to be distributed according to another RV.
 
 For example, while creating a compound continuous RV:
 ```python
@@ -132,7 +132,7 @@ def compound_rv(cls, sym, *args):
 ```
 (similar to `multivariate_rv()` for `joint_rv`)
 
-I couldn't find a general method to compute the density of compound RV *(I believe that such general method doesn't exist, because it would require integrating out at least one parameter, eg. non-conjugate prior in machine learning)*. But for certain cases, it is possible as given [here](https://en.wikipedia.org/wiki/Compound_probability_distribution#Examples).
+I couldn't find a general method to compute the density of compound RV *(I believe that such general formula doesn't exist, because it would require integrating out at least one parameter, e.g. non-conjugate prior in machine learning)*. But for some instances, it is possible as given [here](https://en.wikipedia.org/wiki/Compound_probability_distribution#Examples).
 
 Consider the following code of how this case can be dealt with:
 ```python
@@ -142,10 +142,10 @@ class CompoundPSpace(PSpace):
         return Basic.__new__(cls, s, dist)
 ```
 
-`compute_compound_type` is a function to find what kind of distribution the compounding results in. This can be done in stages:
+`compute_compound_type` is a function to find the resulting distribution after compounding. This can be done in stages:
 
   1. Find out what my original distribution is. Say, `mu ~ Normal('mu', mu0, sigma0**2)`.
-  2. Find out how the distribution is compounded, ie which parameter is compounded and which distribution it is. Say `X ~ Normal('X', mu, sigma**2)`
+  2. Find out how the distribution is compounded, i.e. which parameter is compounded and which distribution it is. Say `X ~ Normal('X', mu, sigma**2)`
   3. Return the resultant distribution with the modified parameters. In our case, it is `Normal`, `X ~ Normal('X', mu0, sigma0**2 + sigma**2)`
 
 Code for above example would like:
@@ -181,9 +181,9 @@ NegativeBinomial("x", k, theta/(theta+1))
 
 A stochastic or random process can be defined as a collection of RVs that is indexed by some mathematical set.
 
-On this topic some work was done in GSoC'18 and I would continue it further.
+On this topic, some work was done in GSoC'18, and I would continue it further.
 
-Work done in GSoC'18:
+Work was done in GSoC'18:
 * `StochasticProcess()` class was created under `joint_rv.py`, which is an abstract class representing stochastic processes as a collection of joint distributions.
 * New python file `stochastic_process_types.py` was created and `BernoulliProcess` was added (it was not completed).
   
@@ -195,12 +195,12 @@ Then I will take up following two important stochastic processes:
 
    I will create a new class `MarkovProcess`/`MarkovChain` under `stochastic_process_types.py`. Following concepts are involved [[Reference]](http://www3.govst.edu/kriordan/files/ssc/math161/pdf/Chapter10ppt.pdf):
    * *Transition Probability Matrix (`transMatrix`):* A square matrix where the rows indicate the current state and column indicate the transition. The rows sum to 1.
-   * *Initial State Probability (`s0`):* This is the a row vector,  representing initial probabilites of being in different states. The row sum to one.
+   * *Initial State Probability (`s0`):* This is the row vector,  representing initial probabilities of being in different states. The row sum to one.
    * *t state vector (`st`):* `st = s0*transMatrix**t`
    * *Stationary vector (`stationary`):* Obtained by solving `s*transMatrix = s`.
-   * *Existence of Stationary vector:* If a Markov chain is regular, then it has unique stationary matrix.
+   * *Existence of Stationary vector:* If a Markov chain is regular, then it has a unique stationary matrix.
    * *Absorbing state:* A state in a Markov chain is called an absorbing state if once the state is entered, it is impossible to leave.
-   * *Absorbing Markov chain:* If there is at least one absorbing state and it is possible to go from any state to at least one absorbing state in finite number of steps.
+   * *Absorbing Markov chain:* If there is at least one absorbing state and it is possible to go from any state to at least one absorbing state in a finite number of steps.
     
     Crude class MarkovChain will be as follows:
     ```python
@@ -271,7 +271,7 @@ Then I will take up following two important stochastic processes:
 2. Random walks: 
    The aim would be to implement random walks in one, two and three dimensions since these are the ones that are most often used. I plan to implement them in the cartesian space pertaining to the dimension of the walk.
 
-   Each random walk will be implemented as a separate class. I plan do so because there are many results like probability of reach certain coordinate, which have direct result in one dimensional walk but not in multi dimensional walk. I also plan to implement functions that would compute the properties of a given random walk.
+   Each random walk will be implemented as a separate class. I plan to do so because there are many results like the probability of reach a certain coordinate, which have a direct result in a one-dimensional walk but not in a multidimensional walk. I also plan to implement functions that would compute the properties of a given random walk.
 
    A functioning but quite naive prototype of a random walk in one dimension is given below.
    ```python
@@ -377,7 +377,7 @@ With all the distributions implemented and with the multivariate distribution at
 
 I will write two files namely `random_matrix.py` and `random_matrix_types.py`. `random_matrix.py` will be along the lines of `crv.py` and I will define the `MatrixPSpace` for random matrices. In `random_matrix_types.py`, I plan to implement various types of random matrices distribution and follow a similar layout to `crv_types.py`. Few of them are `MatrixNormalDistribution` and `MatrixTDistribution`.
 
-I first plan to implement `MatrixNormalDistribution`. For this I will reference from [wolfram](https://reference.wolfram.com/language/ref/MatrixNormalDistribution.html). I will also add/update functions to calculate mean, variance and kurtosis of this distribution.
+I first plan to implement `MatrixNormalDistribution`. For this, I will reference from [Wolfram](https://reference.wolfram.com/language/ref/MatrixNormalDistribution.html). I will also add/update functions to calculate the mean, variance and kurtosis of this distribution.
 
 Expected working;
 ```python
@@ -394,7 +394,7 @@ I have not thought the complete implementation details for `MatrixRandomDistribu
 
 **Export expressions of RV to external libraries(PyMC3, PyStan)**
 
-I have used PyMC3 in my Machine Learning courses. Since both are python libraries, exporting to these libraries would basically deal with translating SymPy RVs so that they can be fed into them.
+I have used PyMC3 in my Machine Learning courses. Since both are python libraries, exporting to these libraries would deal with translating SymPy RVs so that they can be fed into them.
 
 Below is an example, to convert SymPy Normal RV to PyMC3 RV:
 ```python
@@ -445,7 +445,7 @@ Current state on measures of dependence between RV:
 
 **Support integration and equation solving**
 
-I will work to implement functions like quantile, median, mode. Also this is not complete and I would discuss with mentor during community bonding time about what can be done in this section.
+I will work to implement functions like quantile, median, mode. Also, this is not complete, and I would discuss with the mentor during community bonding time about what can be done in this section.
 
 ***
 
@@ -458,7 +458,7 @@ Goals for this period are:
 1. Get to know my mentor and other organizations members well.
 2. Get the idea of workflow during the project.
 3. Implement the distributions mentioned in stage 1 and add tests for them.
-4. Disscuss with mentors about the implementation details of Random Matrix.
+4. Discuss with mentors about the implementation details of Random Matrix.
 5. Read more about Random walk in two and three dimensions from *Principles of Random Walk by Spitzer*. 
 
 **Coding Period**
@@ -472,7 +472,7 @@ May 27 - June 2 (Week 1)
   
 June 3 - June 16 (Week 2 and 3)
 
-* I will implement function to find distributions for some compound distributions as suggested above.
+* I will implement a function to find distributions for some compound distributions as suggested above.
 * I will complete `BernoulliProcess` and implement `MarkovChain` and write tests for it.
 * I will implement Random Walk in one dimension.
 * I will also study more about Random Walk in two and three dimensions.
@@ -480,8 +480,8 @@ June 3 - June 16 (Week 2 and 3)
 
 June 17 - June 23 (Week 4)
 
-* I will implement Random Walk in two dimension.
-* I will also research about implemention of Gaussian Random Walk.
+* I will implement Random Walk in two dimensions.
+* I will also research about the implementation of Gaussian Random Walk.
 
 June 24 - June 30 (Week 5)
 
@@ -512,7 +512,7 @@ July 28 - August 10 (Week 10 and 11)
 
 * I will implement `MatrixNormalDistribution`, add various functions like mean, variance, skewness to it and write tests for them.
 * I will also write code for exporting SymPy RVs to PyMC3 and PyStan.
-* Discussion about supporting assumption of dependence between RVs.
+* Discussion about supporting the assumption of dependence between RVs.
 * Completion of Stage 4.
 
 August 11 - August 17 (Week 12)
@@ -525,7 +525,7 @@ August 18 - August 26 (Week 13 and Wrap up)
 
 * Preparation for Final Phase Evaluation Submission Deadline which is on August 26. This includes code-formatting, completing documentation and solving unknown bugs.
 * I will write a blog post recounting my experience and work during the whole project.
-* If time is left, then I can work on implementation of functions like quantile, median, mode and supporting integration.
+* If time is left, then I can work on the implementation of functions like quantile, median, mode and supporting integration.
 
 ***
 
@@ -550,9 +550,9 @@ I am proficient in writing code using Python. Due to my exposure to sympy and co
 
 ***
 ## *Availablity and Working Hours*
-I have no other commitments during the summer. My holidays duration match with that of GSoC. During this time I will be able to devote 40+ (minimum) hours per week. My college reopens in August. But due to little load during the beginning I still would be able to devote 40+ hours.
+I have no other commitments during the summer. My holiday's duration match with that of GSoC. During this time I will be able to devote 40+ (minimum) hours per week. My college reopens in August. But due to little load during the beginning, I still would be able to devote 40+ hours.
 
-I do not have particular working hours and can adjust my routine according to mentor, so as to achieve maximum efficiency. I will always be available for replying to messages.
+I do not have particular working hours and can adjust my routine according to mentor, to achieve maximum efficiency. I will always be available for replying to messages.
 ***
 
 ### References
