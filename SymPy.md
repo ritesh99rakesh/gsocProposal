@@ -30,12 +30,8 @@
 
 **Version Control:** Git
 
-### _Content_
-[First content](#somewhere)
-
 
 ---
-#somewhere
 ### _Personal Background_
 
 * Academic Experience
