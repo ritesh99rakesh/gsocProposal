@@ -4,8 +4,6 @@
 
 ## **Student: Ritesh Kumar**
 
-## **Mentors:** 
-
 ## _About Me_
 
 **Name:** Ritesh Kumar
@@ -28,38 +26,44 @@
 
 **OS:** Ubuntu 16.04
 
-**Editor:** Visual Studio Code
+**Editor:** Atom
 
 **Version Control:** Git
 
-
+### _Content_
+[First content](#somewhere)
 
 
 ---
+#somewhere
 ### _Personal Background_
 
 * Academic Experience
-  
-    I am a third-year undergraduate student at the Indian Institute of Technology Kanpur. I am pursuing BTech in Electrical Engineering with the second major in Computer Science and Engineering.
-    Currently, I am doing well with my coursework. My current CPI is 9.8/10 after five semesters. Few of my courses relevant for the project:
+
+    I am a third-year undergraduate student at the Indian Institute of Technology Kanpur. I am pursuing BTech in Electrical Engineering with the second major in Computer Science and Engineering. My current CPI is 9.8/10 after five semesters. Few of my courses relevant for the project:
     * Probability and Statistics
     * Randomized Algorithms
     * Algorithms - I and II
     * Probabilistic Machine Learning and Inference
     * Linear Algebra and Complex Analysis
-  
-* Programming Experience
-    
-    I find programming and mathematics to be very interesting as they are the best means to exercise the brain. I am proficient in C, C++, Python, Julia, Javascript. My field of interest includes Randomized Algorithms, Probabilistic Machine Learning and Robotics.
 
-    I am accustomed to C++ and Object Oriented Programming. I introduced to Python three years ago, and since then I have used it in multiple projects both course-related and otherwise. I am reasonably comfortable with Git and Github. I have also become quite comfortable with SymPy as I have been using and contributing to it for past months. 
+* Programming Experience
+
+    I am proficient in C, C++, Python, Julia, Javascript. My field of interest includes Randomized Algorithms, Probabilistic Machine Learning and Robotics.
+
+    I am accustomed to C++ and Object Oriented Programming. I was introduced to Python three years ago, and since then I have used it in multiple projects both course-related and otherwise. I am reasonably comfortable with Git and Github. I have also become quite comfortable with SymPy as I have been using and contributing to it for past months.
 
 ***
 ## _The Project_
 
 ## _Introduction_
 
-My target of GSoC'19 under SymPy would be to develop the stats module to increase its functionality like robust multivariate distributions, compound distribution, ability to export expressions of RVs to external libraries, support integration and equation solving and introduce new features like Random Matrices, Markov Chain and Random Walk.
+My target of GSoC'19 under SymPy would be to develop the stats module to increase its functionality like
+* robust multivariate distributions
+* compound distribution
+* ability to export expressions of RVs to external libraries
+* support integration and equation solving and
+* introduce new features like Markov Chain, Random Walk and Random Matrices.
 
 ---
 ## _Motivation_
@@ -91,7 +95,7 @@ I plan to start the project by implementing the following distributions:
 * Multivariate(Discrete):
   * [Multinomial distribution](https://en.wikipedia.org/wiki/Multinomial_distribution)
   * [Negative Multinomial distribution](https://en.wikipedia.org/wiki/Negative_multinomial_distribution)
-  
+
 I also plan to write a test to all the distributions above and increase the current code coverage(I am currently working on these).
 
 ---
@@ -117,7 +121,7 @@ if any(isinstance(arg, RandomSymbol) for arg in args):
 ```
 (stats/crv_types.py and stats/drv_types.py)
 
-Which assumes that the RV belongs to `JointPSpace`. This concept mixes both joint and compound distributions and complicates the further computation of compound RV. 
+Which assumes that the RV belongs to `JointPSpace`. This concept mixes both joint and compound distributions and complicates the further computation of compound RV.
 
 To solve this issue, I plan to implement compound RVs in a separate file(`compound_rv.py`), Very similar to joint distribution. This also requires to implement a separate class of probability space called `CompoundPSpace`. An object of this class will be created if the parameters of the given RV are found to be distributed according to another RV.
 
@@ -186,12 +190,12 @@ On this topic, some work was done in GSoC'18, and I would continue it further.
 Work was done in GSoC'18:
 * `StochasticProcess()` class was created under `joint_rv.py`, which is an abstract class representing stochastic processes as a collection of joint distributions.
 * New python file `stochastic_process_types.py` was created and `BernoulliProcess` was added (it was not completed).
-  
+
 I would like to take up the work from where it was left. I will first complete `BernoulliProcess` module along the lines of this [comment](https://github.com/sympy/sympy/pull/15058/files/48653d1e45d8f00477a1656c59a42fb4d83a90f1#r209214251).
 
 Then I will take up following two important stochastic processes:
 
-1. Markov Chains: 
+1. Markov Chains:
 
    I will create a new class `MarkovProcess`/`MarkovChain` under `stochastic_process_types.py`. Following concepts are involved [[Reference]](http://www3.govst.edu/kriordan/files/ssc/math161/pdf/Chapter10ppt.pdf):
    * *Transition Probability Matrix (`transMatrix`):* A square matrix where the rows indicate the current state and column indicate the transition. The rows sum to 1.
@@ -201,7 +205,7 @@ Then I will take up following two important stochastic processes:
    * *Existence of Stationary vector:* If a Markov chain is regular, then it has a unique stationary matrix.
    * *Absorbing state:* A state in a Markov chain is called an absorbing state if once the state is entered, it is impossible to leave.
    * *Absorbing Markov chain:* If there is at least one absorbing state and it is possible to go from any state to at least one absorbing state in a finite number of steps.
-    
+
     Crude class MarkovChain will be as follows:
     ```python
     class MarkovProcess(StochasticProcess):
@@ -220,20 +224,22 @@ Then I will take up following two important stochastic processes:
             self.name = sympify(name)
             self.transMatrix = sympify(transMatrix)
             self.s0 = sympify(s0)
-        
+
         def initial_state(self):
             if s0 != None:
                 return self.s0
-        
+
         def transition_matrix(self):
             return self.transMatrix
-        
+
         def state(self, t):
             return self.s0*self.transMatrix**t
             # we must speed up this matrix multiplication, as this can be the bottleneck
 
         def stationary_state(self):
-            # Use Perrson_Frobenius theorem given https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem#Finite_Markov_chains to check for existence of stationary_state
+            """ Use Perrson_Frobenius given
+            https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem
+            to check for existence of stationary_state """
             return solve(transMatrix.T - I)
 
         def is_absorbing(self):
@@ -241,21 +247,28 @@ Then I will take up following two important stochastic processes:
                 if self.transMatrix[i][i] == 1
                 return True
             return False
-        
+
         def canonical_form(self):
             if not self.is_absorbing():
                 return ValueError()
             else:
-                # Implement code given here https://github.com/mkutny/absorbing-markov-chains/blob/master/amc.py we get P = [[Q, R], [0, I_r]] where Q is t-by-t matrix (t=number_of_transients), R is nonzero t-by-r matrix, 0 is r-by-t zero matrix and I_r is r-by-r identity matrix (r=number_of_absorbing_states)
-                return canonical_form_matrix
+                """ Implement code given
+                https://github.com/mkutny/absorbing-markov-chains/blob/master/amc.py
+                we get P = [[Q, R], [0, I_r]] where Q is t-by-t matrix (t=number_of_transients),
+                R is nonzero t-by-r matrix, 0 is r-by-t zero matrix and
+                I_r is r-by-r identity matrix (r=number_of_absorbing_states)
+                return canonical_form_matrix """
 
         def fundamental_matrix(self):
             canonical_matrix = self.canonical_form()
             # Get Q from canonical matrix
             Q = canonical_matrix[Q]
             return (eye(number_of_transients) - Q)**(-1)
-        
-        # Also implement Variance on number of visits, Expected number of steps, Variance on number of steps, Transient probabilities and Absorbing probabilities as given here: https://en.wikipedia.org/wiki/Absorbing_Markov_chain
+
+        """ Also implement Variance on number of visits,
+            Expected number of steps, Variance on number of steps,
+            Transient probabilities and Absorbing probabilities as given here:
+            https://en.wikipedia.org/wiki/Absorbing_Markov_chain """
     ```
     Example usage:
     ```python
@@ -266,9 +279,9 @@ Then I will take up following two important stochastic processes:
     [0.96, 0.04]
     >>> MChain.stationary_state()
     [0.975, 0.025]
-    ``` 
+    ```
 
-2. Random walks: 
+2. Random walks:
    The aim would be to implement random walks in one, two and three dimensions since these are the ones that are most often used. I plan to implement them in the cartesian space pertaining to the dimension of the walk.
 
    Each random walk will be implemented as a separate class. I plan to do so because there are many results like the probability of reach a certain coordinate, which have a direct result in a one-dimensional walk but not in a multidimensional walk. I also plan to implement functions that would compute the properties of a given random walk.
@@ -282,7 +295,7 @@ Then I will take up following two important stochastic processes:
            self.step_size = step_size
            self._position = init_position
            self._path = [0]
-        
+
         def position(self):
             """ Returns current position """
             return self._position
@@ -303,20 +316,23 @@ Then I will take up following two important stochastic processes:
             """ Takes a walk in n steps """
             for i in range(n):
                 self.move()
-        
+
         def _update_path(self, n):
             self._path += [n]
 
         def expected_right(self, steps):
-            """ Return number of expected steps taken in right direction """
+            """ Return number of expected steps
+                taken in right direction """
             return self.p*steps
 
         def expected_left(self, steps):
-            """ Return number of expected steps taken in left direction """
+            """ Return number of expected steps
+                taken in left direction """
             return self.q*steps
 
         def prob_position(self, pos=0, steps):
-            """ Probability that we are position=pos after N steps starting from position=self._position """
+            """ Probability that we are position=pos
+                after N steps starting from position=self._position """
             dist = pos - self._position
             if abs(dist) > steps or (steps + dist) % 2 == 0:
                 return 0
@@ -326,7 +342,8 @@ Then I will take up following two important stochastic processes:
                 return Binomial(steps, n1)*self.p**n1*self.q**n2
 
         def prob_distance(self, dist=1, steps):
-            """ Probability that we are at distance=dist from position=self._position after N steps """
+            """ Probability that we are at distance=dist
+                from position=self._position after N steps """
             return self.prob_position(dist+self._position, steps)
 
         def moment(self, t, steps):
@@ -381,7 +398,9 @@ I first plan to implement `MatrixNormalDistribution`. For this, I will reference
 
 Expected working;
 ```python
->>> matrixNormal = MatrixNormalDistribution('N', mu=[[1, 4], [6, 8], [10, 2]}, sigma_row=diag(2, 1, 3), sigma_col=[[2, 1], [1, 3])
+>>> matrixNormal = MatrixNormalDistribution('N', mu=\
+[[1, 4], [6, 8], [10, 2]}, sigma_row=diag(2, 1, 3),\
+sigma_col=[[2, 1], [1, 3])
 >>> mean(matrixNormal)
 [[1, 2], [6, 8], [10, 2]]
 ```
@@ -459,7 +478,7 @@ Goals for this period are:
 2. Get the idea of workflow during the project.
 3. Implement the distributions mentioned in stage 1 and add tests for them.
 4. Discuss with mentors about the implementation details of Random Matrix.
-5. Read more about Random walk in two and three dimensions from *Principles of Random Walk by Spitzer*. 
+5. Read more about Random walk in two and three dimensions from *Principles of Random Walk by Spitzer*.
 
 **Coding Period**
 
@@ -469,7 +488,7 @@ May 27 - June 2 (Week 1)
 * I will implement `CompoundPSpace`.
 * Update documentation of community bonding period work and complete any remaining work.
 * Completion of Stage 1.
-  
+
 June 3 - June 16 (Week 2 and 3)
 
 * I will implement a function to find distributions for some compound distributions as suggested above.
@@ -501,7 +520,7 @@ July 15 - July 21 (Week 8)
 
 * Start with the basic structure for Random matrices.
 * Will write code for probability space of Random matrices.
-  
+
 July 22 - July 28 (Week 9)
 
 * Buffer Period: Catch up with any unfinished work left in the past weeks.
@@ -537,6 +556,7 @@ I am proficient in writing code using Python. Due to my exposure to sympy and co
 
 * [#16338](https://github.com/sympy/sympy/pull/16338) Physics.optics: Added tests to physics.optics for increased coverage.
 * [#16440](https://github.com/sympy/sympy/pull/16440): Physics.mechanics: Added tests for particle and rigidbody in physics.mechanics.
+*  [#16449](https://github.com/sympy/sympy/pull/16449) stats: Added CDF for Maxwell, Rayleigh, Cauchy and Gompertz distributions.
 
 ---
 
@@ -545,7 +565,6 @@ I am proficient in writing code using Python. Due to my exposure to sympy and co
 * [#16152](https://github.com/sympy/sympy/pull/16152) Printing: Corrected printing symbol which contained text.
 *  [#16202](https://github.com/sympy/sympy/pull/16202) Physics.mechanics: Added functions to find rotational_kinetic_energy, translational_kinetic_energy and total_kinetic_energy for rigidboy and particle.
 *  [#16361](https://github.com/sympy/sympy/pull/16361) stats: Added kurtosis function and test for it.
-*  [#16449](https://github.com/sympy/sympy/pull/16449) stats: Added CDF for Maxwell, Rayleigh, Cauchy and Gompertz distributions.
 *  [#16465](https://github.com/sympy/sympy/pull/16465) stats: Added Levy distribution to crv_types.py and added tests for it.
 
 ***
@@ -558,10 +577,8 @@ I do not have particular working hours and can adjust my routine according to me
 ### References
 
 * SymPy Docs
-* Wikipedia
-* Wolfram mathworld
+* Wikipedia and Wolfram mathworld
 * Principles of Random Walk by Spitzer F.
 * Markov Chains by Norris J.
 * Past year proposals
-* All other references are provided at required places.
 ---
